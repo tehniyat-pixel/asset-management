@@ -3,10 +3,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
 
-const sequelize = new Sequelize('assetdb', 'root', '12345', {
-  host: 'localhost',
-  dialect: 'mysql',
-});
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 const Asset = sequelize.define('Asset', {
   name: {
