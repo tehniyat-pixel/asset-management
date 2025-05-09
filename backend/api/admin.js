@@ -9,17 +9,17 @@ import Asset from '../models/Asset.js';
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
-const app = express();
+// Serverless function
+export default async (req, res) => {
+  const app = express();
 
-// AdminJS config
-const adminJs = new AdminJS({
-  resources: [Asset],
-  rootPath: '/admin',
-});
-const router = AdminJSExpress.buildRouter(adminJs);
-app.use(adminJs.options.rootPath, router);
+  const adminJs = new AdminJS({
+    resources: [Asset],
+    rootPath: '/admin',
+  });
 
-// Export as a serverless function
-export default (req, res) => {
+  const router = AdminJSExpress.buildRouter(adminJs);
+  app.use(adminJs.options.rootPath, router);
+
   app(req, res);
 };
