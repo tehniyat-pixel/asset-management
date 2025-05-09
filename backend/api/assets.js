@@ -1,25 +1,24 @@
-// api/admin.js
+// api/assets.js
 
 import express from 'express';
-import AdminJS from 'adminjs';
-import AdminJSExpress from '@adminjs/express';
-import AdminJSSequelize from '@adminjs/sequelize';
-import sequelize from '../sequelize.js';
-import Asset from '../models/Asset.js';
-
-AdminJS.registerAdapter(AdminJSSequelize);
+import cors from 'cors';
+import assetRoutes from '../routes/assets.js';
 
 const app = express();
 
-// AdminJS config
-const adminJs = new AdminJS({
-  resources: [Asset],
-  rootPath: '/admin',
-});
-const router = AdminJSExpress.buildRouter(adminJs);
-app.use(adminJs.options.rootPath, router);
+// Middleware
+app.use(express.json());
+app.use(cors({
+  origin: 'https://asset-management-frontend-one.vercel.app',  // your React app, NOT backend port!
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
+// Your API routes
+app.use('/api/assets', assetRoutes);
 
 // Export as a serverless function
 export default (req, res) => {
   app(req, res);
 };
+
