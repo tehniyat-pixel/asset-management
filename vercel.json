@@ -12,4 +12,8 @@
       "dest": "/app.js"
     }
   ]
+  "rewrites": [
+    { "source": "/admin", "destination": "/api/admin" },
+    { "source": "/api/assets", "destination": "/api/assets" }
+  ]
 }
