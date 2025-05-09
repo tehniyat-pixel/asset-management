@@ -3,7 +3,9 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'mysql', // or 'postgres'
+  });
 
 const Asset = sequelize.define('Asset', {
   name: {
