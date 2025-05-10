@@ -23,7 +23,8 @@ app.use(
     credentials: true,
   })
 );
-
+// ✅ Allow preflight (OPTIONS) requests
+app.options('*', cors());
 // AdminJS setup
 const adminJs = new AdminJS({
   resources: [Asset],
