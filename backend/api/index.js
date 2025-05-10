@@ -25,6 +25,9 @@ app.use(
 );
 // ✅ Allow preflight (OPTIONS) requests
 app.options('*', cors());
+// ✅ 3. JSON body parser
+app.use(express.json());
+
 // AdminJS setup
 const adminJs = new AdminJS({
   resources: [Asset],
