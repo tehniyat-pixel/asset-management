@@ -12,44 +12,41 @@ AdminJS.registerAdapter(AdminJSSequelize);
 
 const app = express();
 
-// Enhanced CORS configuration
-const corsOptions = {
-  origin: [
+// 1. Apply CORS middleware FIRST
+app.use((req, res, next) => {
+  const allowedOrigins = [
     'https://asset-management-frontend-one.vercel.app',
     'http://localhost:3000'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'X-Requested-With',
-    'Accept',
-    'X-Amz-Date', // Important for AWS/Serverless
-    'X-Api-Key',
-    'X-Amz-Security-Token'
-  ],
-  credentials: true,
-  optionsSuccessStatus: 200,
-  preflightContinue: false // Important for Vercel
-};
+  ];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+});
 
-// Apply CORS middleware to all routes
-app.use(cors(corsOptions));
-
-// Explicit OPTIONS handler for all routes
-app.options('*', cors(corsOptions));
-
-// Body parser middleware
+// 2. Body parser
 app.use(express.json());
 
-// Route-specific CORS headers (double protection)
-app.use('/api/assets', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', corsOptions.origin);
-  res.header('Access-Control-Allow-Methods', corsOptions.methods.join(','));
-  res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-}, assetRoutes);
+// 3. Your routes
+app.post('/api/assets', (req, res) => {
+  try {
+    // Your asset creation logic
+    res.status(201).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // AdminJS setup
 const adminJs = new AdminJS({
