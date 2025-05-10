@@ -3,9 +3,20 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
 
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'mysql', // or 'postgres'
-  });
+  const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'mysql',
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: true,
+    },
+  },
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
+});
 
 const Asset = sequelize.define('Asset', {
   name: {
