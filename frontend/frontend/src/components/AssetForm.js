@@ -38,17 +38,12 @@ const AssetForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Create axios instance with base config
- const response = await axios.post(
-  'https://asset-management-backend3-git-main-tehniyats-projects.vercel.app/api/assets',
-  assetData,
-  {
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    },
-    withCredentials: true
-  }
-);
+axios.post('https://asset-management-backend3.vercel.app/api/assets', data, {
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  withCredentials: true
+})
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap';
