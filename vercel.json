@@ -1,15 +1,13 @@
 {
-  
   "version": 2,
-  "builds": [
-    { "src": "api/index.js", "use": "@vercel/node" }
-  ],
+  "functions": {
+    "api/index.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.js" },
-    { "src": "/admin/(.*)", "dest": "/api/index.js" }
-  ],
-  "env": {
-    "DATABASE_URL": "mysql://root:12345@localhost:3307/assetdb",
-    "FRONTEND_URL": "https://asset-management-frontend-one.vercel.app/"
-  }
+    { "src": "/api/(.*)", "dest": "api/index.js" },
+    { "src": "/admin/(.*)", "dest": "api/index.js" }
+  ]
 }
+
