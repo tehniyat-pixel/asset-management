@@ -14,25 +14,40 @@ AdminJS.registerAdapter(AdminJSSequelize);
 
 const app = express();
 
-// ✅ CORS middleware
-const allowedOrigins = ['https://asset-management-frontend-one.vercel.app'];
-app.use(cors({
+// ✅ Enhanced CORS configuration
+const allowedOrigins = [
+  'https://asset-management-frontend-one.vercel.app',
+  'http://localhost:3000' // for local development
+];
+
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error('CORS blocked for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+ methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept'
+  ],
   credentials: true,
-}));
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
 
-// ✅ Explicit preflight handler (VERY IMPORTANT for Vercel)
-app.options('*', cors());
+// Apply CORS to all routes
+app.use(cors(corsOptions));
 
-// ✅ JSON middleware
-app.use(express.json());
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 
 // ✅ AdminJS setup
 const adminJs = new AdminJS({
