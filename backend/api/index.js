@@ -14,25 +14,12 @@ AdminJS.registerAdapter(AdminJSSequelize);
 
 const app = express();
 
-// ✅ Enhanced CORS configuration
-const allowedOrigins = [
-  'https://asset-management-frontend-one.vercel.app',
-  'http://localhost:3000' // for local development
-];
-
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error('CORS blocked for origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
- methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: [
+    'https://asset-management-frontend-one.vercel.app',
+    'http://localhost:3000' // for local dev
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type',
     'Authorization',
@@ -40,14 +27,18 @@ const corsOptions = {
     'Accept'
   ],
   credentials: true,
-  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+  optionsSuccessStatus: 200
 };
 
-// Apply CORS to all routes
+// Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Handle preflight requests for all routes
+// Explicitly handle OPTIONS requests
 app.options('*', cors(corsOptions));
+
+// Your other middleware and routes...
+app.use(express.json());
+app.use('/api/assets', assetRoutes);
 
 // ✅ AdminJS setup
 const adminJs = new AdminJS({
@@ -57,8 +48,6 @@ const adminJs = new AdminJS({
 const adminRouter = AdminJSExpress.buildRouter(adminJs);
 app.use(adminJs.options.rootPath, adminRouter);
 
-// ✅ API routes
-app.use('/api/assets', assetRoutes);
 
 // ✅ Export as serverless function
 export default serverless(app);
