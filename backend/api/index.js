@@ -1,10 +1,10 @@
-
 import express from 'express';
+import cors from 'cors';
+import serverless from 'serverless-http';
+
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import AdminJSSequelize from '@adminjs/sequelize';
-import serverless from 'serverless-http';
-import cors from 'cors';
 
 import sequelize from '../sequelize.js';
 import Asset from '../models/Asset.js';
@@ -14,31 +14,36 @@ AdminJS.registerAdapter(AdminJSSequelize);
 
 const app = express();
 
-// Middleware
-app.use(express.json());
-app.use(
-  cors({
-    origin: 'https://asset-management-frontend-one.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  })
-);
-// ✅ Allow preflight (OPTIONS) requests
+// ✅ CORS middleware
+const allowedOrigins = ['https://asset-management-frontend-one.vercel.app'];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+}));
+
+// ✅ Explicit preflight handler (VERY IMPORTANT for Vercel)
 app.options('*', cors());
-// ✅ 3. JSON body parser
+
+// ✅ JSON middleware
 app.use(express.json());
 
-// AdminJS setup
+// ✅ AdminJS setup
 const adminJs = new AdminJS({
   resources: [Asset],
   rootPath: '/admin',
 });
-
 const adminRouter = AdminJSExpress.buildRouter(adminJs);
 app.use(adminJs.options.rootPath, adminRouter);
 
-// API routes
+// ✅ API routes
 app.use('/api/assets', assetRoutes);
 
-// Export serverless function handler
+// ✅ Export as serverless function
 export default serverless(app);
