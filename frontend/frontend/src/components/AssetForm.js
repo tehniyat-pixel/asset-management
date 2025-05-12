@@ -24,7 +24,7 @@ const AssetForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();import React, { useState, useEffect } from 'react';
+    e.preventDefault();
 
 
 const AssetForm = () => {
