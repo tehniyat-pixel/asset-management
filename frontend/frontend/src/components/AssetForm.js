@@ -227,7 +227,7 @@ axios.post('https://907756e7-f44f-4e22-b7b1-946c875b86e7-00-29l1f6gdf13sq.picard
 
 export default AssetForm;
     try {
-      const response = await axios.post('https://asset-management-backend3-git-main-tehniyats-projects.vercel.app/api/assets', assetData);
+      const response = await axios.post('https://907756e7-f44f-4e22-b7b1-946c875b86e7-00-29l1f6gdf13sq.picard.replit.dev/api/assets', assetData);
       alert('Asset created successfully!');
       setAssetData({
         name: '',
