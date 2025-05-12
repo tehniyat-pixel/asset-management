@@ -38,7 +38,7 @@ const AssetForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Create axios instance with base config
-axios.post('https://asset-management-backend3.vercel.app/api/assets', data, {
+axios.post('https://907756e7-f44f-4e22-b7b1-946c875b86e7-00-29l1f6gdf13sq.picard.replit.dev/api/assets', data, {
   headers: {
     'Content-Type': 'application/json'
   },
