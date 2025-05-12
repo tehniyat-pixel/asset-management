@@ -25,8 +25,7 @@ const AssetForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
+};
 const AssetForm = () => {
   const [assetData, setAssetData] = useState({
     name: '',
