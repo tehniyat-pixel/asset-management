@@ -37,7 +37,7 @@ const AssetForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Create axios instance with base config
-axios.post('https://51fd903d-b127-49e9-969f-ad370662b2cb.e1-us-east-azure.choreoapps.dev/api/assets', data, {
+axios.post('https://8cd5f3c1-5355-4a95-907b-8bac60157245.e1-us-east-azure.choreoapps.dev/api/assets', data, {
   headers: {
     'Content-Type': 'application/json'
   },
@@ -226,7 +226,7 @@ axios.post('https://51fd903d-b127-49e9-969f-ad370662b2cb.e1-us-east-azure.choreo
 
 export default AssetForm;
     try {
-      const response = await axios.post('https://51fd903d-b127-49e9-969f-ad370662b2cb.e1-us-east-azure.choreoapps.dev/api/assets', assetData);
+      const response = await axios.post('https://8cd5f3c1-5355-4a95-907b-8bac60157245.e1-us-east-azure.choreoapps.dev/api/assets', assetData);
       alert('Asset created successfully!');
       setAssetData({
         name: '',
